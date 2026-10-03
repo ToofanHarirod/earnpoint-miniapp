@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Earn Point</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f3f5f9;
+      color: #172033;
+    }
+
+    .app {
+      max-width: 480px;
+      margin: auto;
+      padding: 20px 16px 90px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      font-size: 42px;
+    }
+
+    .title {
+      font-size: 25px;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+
+    .balance {
+      background: linear-gradient(135deg, #2563eb, #4f46e5);
+      color: white;
+      border-radius: 22px;
+      padding: 25px;
+      text-align: center;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 25px rgba(37, 99, 235, .25);
+    }
+
+    .balance-title {
+      font-size: 15px;
+      opacity: .9;
+    }
+
+    .points {
+      font-size: 36px;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+
+    .points-label {
+      font-size: 14px;
+      opacity: .9;
+    }
+
+    .daily {
+      background: white;
+      border-radius: 18px;
+      padding: 17px;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 3px 12px rgba(0,0,0,.06);
+    }
+
+    .daily-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .icon {
+      width: 45px;
+      height: 45px;
+      border-radius: 14px;
+      background: #eef2ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 23px;
+    }
+
+    .daily-title {
+      font-weight: bold;
+    }
+
+    .daily-sub {
+      font-size: 12px;
+      color: #777;
+      margin-top: 4px;
+    }
+
+    .claim {
+      border: none;
+      background: #2563eb;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 12px;
+      font-weight: bold;
+    }
+
+    .claim:active {
+      transform: scale(.96);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .card {
+      background: white;
+      border: none;
+      border-radius: 18px;
+      padding: 22px 10px;
+      text-align: center;
+      box-shadow: 0 3px 12px rgba(0,0,0,.06);
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .card-icon {
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    .bottom {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      max-width: 480px;
+      margin: auto;
+      background: white;
+      display: flex;
+      justify-content: space-around;
+      padding: 12px 5px;
+      border-top: 1px solid #ddd;
+    }
+
+    .nav {
+      border: none;
+      background: transparent;
+      font-size: 12px;
+      color: #555;
+    }
+
+    .nav-icon {
+      display: block;
+      font-size: 22px;
+      margin-bottom: 3px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <div class="header">
+    <div class="logo">🤖</div>
+    <div class="title">Earn Point</div>
+  </div>
+
+  <div class="balance">
+    <div class="balance-title">💰 موجودی شما</div>
+    <div class="points" id="points">0</div>
+    <div class="points-label">POINT</div>
+  </div>
+
+  <div class="daily">
+    <div class="daily-left">
+      <div class="icon">🎁</div>
+      <div>
+        <div class="daily-title">پاداش روزانه</div>
+        <div class="daily-sub">هر روز 10 امتیاز دریافت کنید</div>
+      </div>
+    </div>
+
+    <button class="claim" onclick="dailyReward()">دریافت</button>
+  </div>
+
+  <div class="grid">
+
+    <button class="card" onclick="earn()">
+      <div class="card-icon">🎯</div>
+      کسب امتیاز
+    </button>
+
+    <button class="card" onclick="referral()">
+      <div class="card-icon">👥</div>
+      دعوت دوستان
+    </button>
+
+    <button class="card" onclick="withdraw()">
+      <div class="card-icon">💳</div>
+      برداشت
+    </button>
+
+    <button class="card" onclick="historyPage()">
+      <div class="card-icon">📜</div>
+      تاریخچه
+    </button>
+
+  </div>
+
+</div>
+
+<div class="bottom">
+
+  <button class="nav" onclick="home()">
+    <span class="nav-icon">🏠</span>
+    خانه
+  </button>
+
+  <button class="nav" onclick="earn()">
+    <span class="nav-icon">🎯</span>
+    کسب امتیاز
+  </button>
+
+  <button class="nav" onclick="referral()">
+    <span class="nav-icon">👥</span>
+    دعوت
+  </button>
+
+  <button class="nav" onclick="withdraw()">
+    <span class="nav-icon">💳</span>
+    برداشت
+  </button>
+
+</div>
+
+<script>
+const tg = window.Telegram.WebApp;
+const API_URL = "https://tech-bind-polished-greatly.trycloudflare.com";
+
+tg.ready();
+tg.expand();
+
+async function loadBalance() {
+  const initData = tg.initData;
+  if (!initData) return;
+
+  try {
+    const response = await fetch(`${API_URL}/api/me`, {
+      headers: {"X-Telegram-Init-Data": initData}
+    });
+    const data = await response.json();
+
+    if (data.ok) {
+      const balance = document.querySelector(".balance");
+      if (balance) balance.textContent = data.user.points;
+    }
+  } catch (error) {
+    console.log("Connection error:", error);
+  }
+}
+
+function referral() {
+  tg.showAlert("👥 بخش دعوت دوستان");
+}
+
+function withdraw() {
+  tg.showAlert("💳 بخش برداشت");
+}
+
+function historyPage() {
+  tg.showAlert("📜 تاریخچه تراکنش‌ها");
+}
+
+function dailyReward() {
+  tg.showAlert("🎁 پاداش روزانه");
+}
+
+loadBalance();
+</script>
+
+</body>
+</html>
